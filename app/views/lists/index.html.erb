@@ -7,18 +7,37 @@
       <tr class="bg-secondary" >
         <td class="striker"><%= link_to list.description, edit_list_path(list) %></td>
         <td>
+          <%= form_with(model: list) do |form| %>
+            <%= form.text_field :description, type: 'hidden' %>
+            <%= form.check_box :completed, :checked => false, :style => 'visibility:hidden' %>
+            <%= form.submit "unCross", class: "btn btn-outline-warning btn-sm" %>
+          <% end %>
+      </td>
+        <td>
           <% link_to "Edit", edit_list_path(list) %> 
-          <center><%= link_to "Delete", list, class: "btn btn-danger", method: :delete %> </center> </td>
+          <center><%= button_to "Delete", list, data: { turbo_confirm: 'Are you sane?'}, class: "btn btn-danger", method: :delete %> </center> </td>
       </tr>
       <% else %>
        <tr>
         <td><%= link_to list.description, edit_list_path(list) %></td>
         <td>
+          <%= form_with(model: list) do |form| %>
+            <%= form.text_field :description, type: 'hidden' %>
+            <%= form.check_box :completed, :checked => true, :style => 'visibility:hidden' %>
+            <%= form.submit "Cross Off", class: "btn btn-outline-success btn-sm" %>
+          <% end %>
+      </td>
+        <td>
           <% link_to "Edit", edit_list_path(list) %> 
-         <center><%= link_to "Delete", list, class: "btn btn-danger", method: :delete %> </center> </td>
+         <center>
+            <%= button_to "Delete", list, data: { turbo_confirm: 'Are you sane?'}, class: "btn btn-danger", method: :delete %> 
+         </center> 
+        </td>
       </tr>
       <% end %>
     <% end %>
   </tbody>
 
 </table>
+
+<% link_to 'Delete Selected Items', home_trash_em_all_path, data: { turbo_confirm: 'Are you sane?'}, class: "btn btn-danger", method: :trash_em_all %>
